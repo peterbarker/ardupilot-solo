@@ -53,6 +53,7 @@ public:
     void DumpPageInfo(AP_HAL::BetterStream *port);
     void ShowDeviceInfo(AP_HAL::BetterStream *port);
     void ListAvailableLogs(AP_HAL::BetterStream *port);
+    void Log_Write_Parameters(void);
 #endif // DATAFLASH_NO_CLI
 
     /* logging methods common to all vehicles */

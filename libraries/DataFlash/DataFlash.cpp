@@ -43,7 +43,7 @@ void DataFlash_Class::Log_Fill_Format(const struct LogStructure *s, struct log_F
 #ifndef DATAFLASH_NO_CLI
 void DataFlash_Class::LogReadProcess(uint16_t log_num,
                                      uint16_t start_page, uint16_t end_page,
-                                     print_mode_fn printMode,
+                                     void (*printMode)(AP_HAL::BetterStream *port, uint8_t mode),
                                      AP_HAL::BetterStream *port) {
     backend->LogReadProcess(log_num, start_page, end_page, printMode, port);
 }

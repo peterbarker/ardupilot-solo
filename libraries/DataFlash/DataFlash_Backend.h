@@ -20,8 +20,6 @@
 class DataFlash_Backend
 {
 public:
-    FUNCTOR_TYPEDEF(print_mode_fn, void, AP_HAL::BetterStream*, uint8_t);
-
     DataFlash_Backend(DataFlash_Class &front) :
         _front(front)
         { }
@@ -44,7 +42,7 @@ public:
 #ifndef DATAFLASH_NO_CLI
     virtual void LogReadProcess(uint16_t log_num,
                                 uint16_t start_page, uint16_t end_page,
-                                print_mode_fn printMode,
+                                void (*printMode)(AP_HAL::BetterStream *port, uint8_t mode),
                                 AP_HAL::BetterStream *port) = 0;
     virtual void DumpPageInfo(AP_HAL::BetterStream *port) = 0;
     virtual void ShowDeviceInfo(AP_HAL::BetterStream *port) = 0;
@@ -75,7 +73,7 @@ protected:
     read and print a log entry using the format strings from the given structure
     */
     void _print_log_entry(uint8_t msg_type,
-                          print_mode_fn print_mode,
+                          void (*printMode)(AP_HAL::BetterStream *port, uint8_t mode),
                           AP_HAL::BetterStream *port);
 
     const struct LogStructure *_structures;
@@ -85,7 +83,7 @@ protected:
     /*
       read a block
     */
-    virtual bool ReadBlock(void *pkt, uint16_t size) = 0;
+    virtual void ReadBlock(void *pkt, uint16_t size) = 0;
 
 };
 
