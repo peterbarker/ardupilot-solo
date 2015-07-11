@@ -150,7 +150,8 @@ int8_t DataFlash_MAVLink::next_block_address()
     return oldest_block_address;
 }
 
-void DataFlash_MAVLink::handle_ack(uint32_t block_num)
+void DataFlash_MAVLink::handle_ack(const mavlink_message_t *msg,
+                                   uint32_t block_num)
 {
     if (!_initialised) {
         return;
@@ -167,6 +168,8 @@ void DataFlash_MAVLink::handle_ack(uint32_t block_num)
         _latest_block_num = 0;
         _cur_block_address = next_block_address();
         _logging_started = true;
+        _target_system_id = msg->sysid;
+        _target_component_id = msg->compid;
         StartNewLog();
         return;
     }
@@ -213,6 +216,8 @@ void DataFlash_MAVLink::send_log_block(uint32_t block_address)
     uint16_t len = mavlink_msg_remote_log_data_block_pack(mavlink.system_id, 
                                                           mavlink.component_id, 
                                                           &msg,
+                                                          _target_system_id,
+                                                          _target_component_id,
                                                           _block_max_size,
                                                           _block_num[block_address],
                                                           _buf[block_address]);
