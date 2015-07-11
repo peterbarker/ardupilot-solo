@@ -805,7 +805,7 @@ GCS_MAVLINK::handle_remote_log_status(const mavlink_message_t *msg, DataFlash_MA
     if(packet.block_status == 0){
         DataFlash.handle_retry(packet.block_cnt);
     } else{
-        DataFlash.handle_ack(packet.block_cnt);
+        DataFlash.handle_ack(msg, packet.block_cnt);
     }
 }
 // send a message using mavlink, handling message queueing
